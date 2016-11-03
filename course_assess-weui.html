@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>上门家教 - 课后评价</title>
+	<!-- 
+    <link rel="stylesheet" href="assets/css/weui.min.css"/>
+		-->
+	<style type="text/css">
+		@import url("assets/css/weui.min.css");
+	</style>
+	
+ 	<style>
+		body,html{
+			height:100%;-webkit-tap-highlight-color:transparent
+		}
+		.page,body{
+			background-color:#fbf9fe
+		}
+		.container{
+			overflow:hidden
+		}
+		.container,.page{
+			position:absolute;top:0;right:0;bottom:0;left:0
+		}
+		.page{
+			overflow-y:auto;-webkit-overflow-scrolling:touch
+		}
+		.hd {
+			padding:2em 0
+		}
+		.page_title {
+			text-align:center;font-size:18px;color:#f26d02;font-weight:200;margin:0 15%
+		}
+		.page_desc{
+			text-align:center;color:#888;font-size:14px
+		}
+
+	</style>
+</head>
+<body ontouchstart>
+  <div class="container js_container">
+	<div class="page">
+      <!-- 
+	  <div class="hd">
+        
+		<h1 class="page_title">课后评价</h1>
+		
+        <p class="page_desc new">＋添加</p> 
+      </div> -->
+      <div class="bd">
+        <div class="weui_cells_title">服务态度</div>
+        <div class="weui_cells weui_cells_radio">
+            <label class="weui_cell weui_check_label" for="x11">
+                <div class="weui_cell_bd weui_cell_primary">
+                    <p>满意</p>
+                </div>
+                <div class="weui_cell_ft">
+                    <input type="radio" class="weui_check" name="radio1" id="x11">
+                    <span class="weui_icon_checked"></span>
+                </div>
+            </label>
+            <label class="weui_cell weui_check_label" for="x12">
+                <div class="weui_cell_bd weui_cell_primary">
+                    <p>不满意</p>
+                </div>
+                <div class="weui_cell_ft">
+                    <input type="radio" name="radio1" class="weui_check" id="x12">
+                    <span class="weui_icon_checked"></span>
+                </div>
+            </label>
+        </div>
+		
+        <div class="weui_cells_title">讲课水平</div>
+        <div class="weui_cells weui_cells_radio">
+            <label class="weui_cell weui_check_label" for="x21">
+                <div class="weui_cell_bd weui_cell_primary">
+                    <p>好评</p>
+                </div>
+                <div class="weui_cell_ft">
+                    <input type="radio" class="weui_check" name="radio2" id="x21">
+                    <span class="weui_icon_checked"></span>
+                </div>
+            </label>
+            <label class="weui_cell weui_check_label" for="x22">
+                <div class="weui_cell_bd weui_cell_primary">
+                    <p>中评</p>
+                </div>
+                <div class="weui_cell_ft">
+                    <input type="radio" name="radio2" class="weui_check" id="x22" checked="checked">
+                    <span class="weui_icon_checked"></span>
+                </div>
+            </label>
+            <label class="weui_cell weui_check_label" for="x23">
+                <div class="weui_cell_bd weui_cell_primary">
+                    <p>差评</p>
+                </div>
+                <div class="weui_cell_ft">
+                    <input type="radio" name="radio2" class="weui_check" id="x23">
+                    <span class="weui_icon_checked"></span>
+                </div>
+            </label>
+        </div>
+		
+		<div class="weui_cells_title">留言</div>
+        <div class="weui_cells weui_cells_form">
+            <div class="weui_cell">
+                <div class="weui_cell_bd weui_cell_primary">
+                    <textarea class="weui_textarea" placeholder="输入意见建议..." rows="2" id="txtNote"></textarea>
+                </div>
+            </div>
+        </div>
+		
+        <div class="weui_btn_area">
+            <a class="weui_btn weui_btn_primary weui_btn_disabled" id="showDialog1">提交</a>
+        </div>
+        <!--BEGIN dialog1-->
+        <div class="weui_dialog_confirm" id="dialog1" style="display: none;">
+            <div class="weui_mask"></div>
+            <div class="weui_dialog">
+                <div class="weui_dialog_hd"><strong class="weui_dialog_title">询问</strong></div>
+                <div class="weui_dialog_bd">确认提交评价？</div>
+                <div class="weui_dialog_ft">
+                    <a class="weui_btn_dialog default">否</a>
+                    <a class="weui_btn_dialog primary">是</a>
+                </div>
+            </div>
+        </div>
+        <!--END dialog1-->
+		
+	    <!-- loading toast -->
+	    <div id="toast" class="weui_loading_toast" style="display:none;">
+	        <div class="weui_mask_transparent"></div>
+	        <div class="weui_toast">
+	            <div class="weui_loading">
+	                <div class="weui_loading_leaf weui_loading_leaf_0"></div>
+	                <div class="weui_loading_leaf weui_loading_leaf_1"></div>
+	                <div class="weui_loading_leaf weui_loading_leaf_2"></div>
+	                <div class="weui_loading_leaf weui_loading_leaf_3"></div>
+	                <div class="weui_loading_leaf weui_loading_leaf_4"></div>
+	                <div class="weui_loading_leaf weui_loading_leaf_5"></div>
+	                <div class="weui_loading_leaf weui_loading_leaf_6"></div>
+	                <div class="weui_loading_leaf weui_loading_leaf_7"></div>
+	                <div class="weui_loading_leaf weui_loading_leaf_8"></div>
+	                <div class="weui_loading_leaf weui_loading_leaf_9"></div>
+	                <div class="weui_loading_leaf weui_loading_leaf_10"></div>
+	                <div class="weui_loading_leaf weui_loading_leaf_11"></div>
+	            </div>
+	            <p class="weui_toast_content">请稍候</p>
+	        </div>
+	    </div>
+	    <!--end toast-->
+		
+	  </div>
+	</div> 
+  </div>	
+ 
+
+  <script src="src/zepto.min.js"></script>
+
+  
+  <script>
+	
+	// 已经评价的，提示，直接退出
+	
+	var url = decodeURI(window.location);
+	//var courseID = location.search.substr(1);
+	//采用正则表达式获取地址栏参数
+	function getQueryString(param){
+	     var reg = new RegExp("(^|&)"+ param +"=([^&]*)(&|$)");
+	     //var r = window.location.search.substr(1).match(reg);
+		 url = url.substr(url.indexOf("?") + 1); //取得所有参数
+		 var r = url.match(reg);
+	     if(r!=null) return unescape(r[2]); return null;
+	}
+	
+	var obj = {
+		courseDate : getQueryString("courseDate"),
+		wxID       : getQueryString("wxID"),
+		courseID   : getQueryString("courseID"),
+		teacher    : getQueryString("teacher")
+	}
+	
+	var $container = $('.js_container');
+	console.log(obj)
+    $container.on('click', '#showDialog1', function () {
+        $('#dialog1').show();
+        $('#dialog1').find('.weui_btn_dialog').on('click', function (e) {
+            // ajax  createCourseAssess.php
+			console.log(e.target.className)
+			if(e.target.className == 'weui_btn_dialog primary'){
+				addAssess()
+			}
+			$('#dialog1').hide();
+			
+			obj.ratingEtq = $("#x11").val()
+			obj.ratingLevel = $("#x21").val()
+			obj.note = $("#txtNote").val()
+			console.log(obj)
+			
+			function addAssess(){
+				$('#toast').show(); 
+				$.ajax({
+			    	url: 'http://www.xzpt.org/wx_ghjy/script/createCourseAssess.php',
+					dataType: "json",
+					data: obj, //{"userId": ""},
+					success: function(response){
+						$('#toast').hide();
+						console.log(response)
+					},
+				});
+			}			
+        });
+    });
+  </script>
+  
+</body>
+</html>

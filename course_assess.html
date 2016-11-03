@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>根号教育</title>
+	<meta charset="utf-8" />
+	<meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">	
+	<link rel="stylesheet" href="src/app.min.css">
+	<!-- 	
+    <link rel="stylesheet" href="//cdn.kik.com/app/2.0.1/app.min.css">
+	
+	<link rel="stylesheet" href="src/app.min.css">
+	<link rel="stylesheet" href="assets/css/docs-exam.css"> -->
+	<style>
+		.app-topbar {background:#FF6600;}
+
+		/*  msg box */
+		#m {
+			filter: alpha(opacity=30);
+			-moz-opacity: 0.3; 
+			opacity: 0.3;
+			position:absolute;
+			z-index:10000;
+			background-color:none;
+		}
+		#lo {
+			position:absolute;
+			width:150px;
+			height:90px;
+			line-height:90px;
+			background-color:#000;
+			color:#fff;
+			text-align:center;
+			z-index:9999;
+	
+			filter: alpha(opacity=70);
+			-moz-opacity: 0.7; 
+			opacity: 0.7;
+			
+			border-radius:10px;
+			-moz-border-radius:10px; /* Old Firefox */
+		}
+		/* ends - msg box */		
+
+		div.label  {
+			display:block;float:left;
+			margin:1px;padding:5px;
+			background:#fff;
+			font-size:0.8em;
+			line-height:30px;height:30px;
+			border-radius:30px;
+		}
+		div.selected {
+			display:block;float:left;
+			margin:1px;padding:5px;
+			background:orange;
+			color:#fff;
+			font-size:0.8em;
+			line-height:30px;height:30px;
+			border-radius:30px;
+		}
+		div.app-button {
+			background:#ccc;
+			color:#888;
+		}
+
+	</style>
+  </head>
+
+  <body>
+ 
+    <div class="app-page" data-page="home">
+      <div class="app-topbar">
+        <div class="app-title">课后评价</div>
+      </div>
+      <div class="app-content" style="padding:15px;">
+		<div class="teach" style="border-bottom:1px solid #ccc;padding:10px;">
+			<span class="teacher"></span>
+			<span class="date" style="float:right;"></span>
+		</div>
+		
+		<div style="margin:15px 10px 5px;color:#888;">好评标签</div>
+		<div>  
+			<div class="label" data-assess="3">上课准时</div>
+			<div class="label" data-assess="2">个人形象整洁</div>
+			<div class="label" data-assess="1">讲课生动、孩子喜欢</div>
+		</div>  
+		<div style="clear:both;"></div>
+		<div style="margin:15px 10px 5px;color:#888;">差评标签</div>
+		<div>
+			<div class="label" data-assess="3">迟到早退</div>
+			<div class="label" data-assess="2">形象不咋地</div>
+			<div class="label" data-assess="1">孩子不喜欢</div>
+		</div> 
+		<div style="clear:both;"></div> 
+
+		  <div style="background:#fff;margin:10px 0px 20px;">
+			  <textarea class="app-input" maxlength="70" wrap="soft"  placeholder="其他意见和建议"></textarea> 	 
+		  </div>	
+		  
+	      <div class="app-button disabled" style="background:#bbb;color:#fff;" id="submit">提交</div>	
+	
+      </div>
+    </div>
+
+
+    <script src="src/zepto.js"></script>
+    <script src="src/app.min.js"></script>
+
+	
+    <script>
+		// 已经评价的，提示，直接退出
+
+		//myUserId = location.search.substr(1); 
+		//alert(myUserId)
+		// 获取sdk签名, main.js
+	
+		var div = '<div class="prompt" style="display:none;">';
+			div += '<div id="m"></div>';
+			div += '<div id="lo"><div id="lo-msg">加载中...</div></div>';
+			div += '</div>';
+		$('body').prepend(div)
+		
+		// msg box ，长宽无法在css设置
+		$("#lo")
+			.css("top",($(document).height()-50)/2)
+			.css("left",($(document).width()-150)/2);
+		$("#m")
+			.width($(document).width())
+			.height($(document).height())			
+		// 全局函数：提示窗口	prompt box
+		showPrompt = function(msg){
+			$('.prompt').find('#lo-msg').text(msg)
+			$('.prompt').show()
+		}	
+		hidePrompt = function(){
+			//$('body .waiting').remove()
+			$('.prompt').hide()
+		} // prompt box -- ends	
+		
+
+		var url = decodeURI(window.location);
+		//var courseID = location.search.substr(1);
+		//采用正则表达式获取地址栏参数
+		function getQueryString(param){
+		     var reg = new RegExp("(^|&)"+ param +"=([^&]*)(&|$)");
+		     //var r = window.location.search.substr(1).match(reg);
+			 url = url.substr(url.indexOf("?") + 1); //取得所有参数
+			 var r = url.match(reg);
+		     if(r!=null) return unescape(r[2]); return null;
+		}
+	
+		var obj = {
+			courseDate : getQueryString("courseDate"),
+			wxID       : getQueryString("wxID"),
+			courseID   : getQueryString("courseID"),
+			teacher    : getQueryString("teacher")
+		}
+
+		// 选择年级、科目
+		App.controller('home', function (page,request) {
+			var me = this;
+			
+			//var teach = '教师：'+request.teacher + "［"+request.courseDate + "］" 
+			$(page).find('.teacher').text('教师：'+request.teacher)
+			//var date = new Date(request.courseDate)
+			//date = (date.getMonth()+1)+'月'+date.getDate()+'日'
+			var date = request.courseDate;
+			//(request.courseDate.substr(5,2))+'月' + request.courseDate.substr(8,2)+'日'
+			$(page).find('.date').text(date)
+			
+			// 多选中
+			var $wrapper = $(page).find('.submit-wrapper'),
+				btnSubmit = $(page).find('#submit'),
+				etq = 0, level = 0, note = '',assess = ''
+			
+			$(page).find('div.label').bind('click', function (e){
+				etq = this.dataset.assess; //$(this).text()
+				//if(level != '') $wrapper.show()
+				var oldClass = $(this).attr('class'); 
+				var newClass = oldClass =='selected' ? 'label':'selected';
+				$(this).attr('class',newClass);
+				var label = $(this).text();
+				if(newClass=='selected'){
+					assess += label+'｜'
+					console.log(assess)
+				}else{
+					assess = assess.replace(label+'｜','')
+					console.log(assess)
+				}
+				
+				// 按钮状态
+				setSubmit(assess)
+			})
+			$(page).find('.level').find('li').bind('click', function (e){
+				//$('.level li').css('background','#fff'); 
+				//$(this).css('color','orangered'); 
+				//$(this).css('border-color','orangered'); 
+				level = this.dataset.assess; //$(this).text()
+				//if(etq != '') $wrapper.show()
+				var oldClass = $(this).attr('class'); 
+				var newClass = oldClass =='selected' ? 'unselected':'selected';
+				$(this).attr('class',newClass);
+				
+				var label = $(this).text();
+				if(newClass=='selected'){
+					assess += label+'｜'
+					console.log(assess)
+				}else{
+					assess = assess.replace(label+'｜','')
+					console.log(assess)
+				}
+				
+				// 按钮状态
+				setSubmit(assess)
+			})
+			
+			btnSubmit.bind('click', function () {		
+				var btnClass = $(this).attr('class');
+				if(btnClass.indexOf('disabled')>=0) return false
+				
+				/*	
+				if(assess==''){
+					showPrompt('请选择评价')
+					setTimeout(function () { hidePrompt() }, 1500);
+					return false
+				} */
+				
+				obj.ratingEtq = etq
+				obj.ratingLevel = level
+				obj.assess = assess
+				obj.note = $(page).find('textarea').val()
+				console.log(obj)
+				
+				createCourseAssess(obj);
+				
+				function createCourseAssess(){
+					//showPrompt('正在保存...')
+					$.ajax({
+				    	url: 'http://www.xzpt.org/wx_ghjy/script/createCourseAssess.php',
+						dataType: "json",
+						data: obj, //{"userId": ""},
+						success: function(response){
+							console.log(response)
+							//if(!JSON.parse(response).success){
+							if(!response.success){
+								showPrompt('评价过，不能重复')
+								setTimeout(function () { hidePrompt() }, 6000);
+								return false
+							}
+							//hidePrompt();
+				
+							App.dialog({
+								title     : '评价成功' ,
+								text  : '谢谢你的评价。'  ,
+								okButton     : '关闭' ,
+							}, function (choice) {
+								if(choice){
+									WeixinJSBridge.call('closeWindow');//wx.closeWindow();
+								}
+							});
+						},
+					});
+				}
+				
+				
+			})	
+			
+			// 提交按钮状态
+			function setSubmit(str){
+				if(str.length > 0){
+					btnSubmit.attr('class','app-button enabled')
+					btnSubmit.css('background','orange')
+				}else{
+					btnSubmit.attr('class','app-button disabled')
+					btnSubmit.css('background','#bbb')
+				}
+			}
+
+		});
+		
+		App.load('home',obj);
+		
+    </script>
+	
+  </body>
+</html>

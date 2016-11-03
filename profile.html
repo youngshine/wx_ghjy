@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>根号教育－简介</title>
+    <link rel="stylesheet" href="assets/css/weui.css"/>
+ 
+ 	<style>
+		.hd
+		{
+			padding:2em 0
+		}
+		.page_title
+		{
+			text-align:center;font-size:34px;color:#3CC51F;font-weight:400;margin:0 15%
+		}
+	</style>
+</head>
+<body>
+    <div class="container js_container">
+        <div class="page">
+	      <div class="hd">
+	        <h1 class="page_title">公司简介</h1>
+			<!-- 
+	        <p class="page_desc new">＋添加</p> -->
+	      </div>
+            <div class="weui_msg">
+
+                <div class="weui_text_area">
+					<p><img src="assets/img/profile/01.jpg" width=100% /></p>
+					<br>
+					<p class="weui_msg_desc" style="text-align:left;">根号学苑成立于2013年，主要从事中学数理化学科辅导，
+拥有独立自主研发的自适应理科智能提分系统和试卷分析系统两大互联网＋教育应用平台。</p>
+					<br>
+					<p class="weui_msg_desc" style="text-align:left;">公司致力于中学数理化快速提分，在激烈中学辅导市场竞争中，根号人剑走偏锋，经过严格细致的市场调查，确立了专注于理科类辅导的定位和战略。</p>
+					<br>
+
+					<p class="weui_msg_desc" style="text-align:left;">公司汇聚众多名师，形成了以国家教育部考试中心原正处级王大赫教授为首的教育专家团作为教学教研顾问团，为公司教学研发活动、教学改革等提供强有力的专业指导，从而在市场上成为极具个性和特色的一家辅导机构！</p>
+					<br>
+					<p class="weui_msg_desc" style="text-align:left;">学校提供上门精品高端家教及到校教学两种模式，根据家长的需要自由选择。借助高科技的自适应教学平台，自动复制名师，让教学内容可视化、透明化，并承诺没有效果不收费，赢得广大家长的高度欢迎。</p>
+			<br>
+			<p><img src="assets/img/profile/qrcode.png" width=150 height=150 /></p>		
+                </div>
+				
+
+        </div>
+    </div>
+	
+	<!-- 
+    <script src="./zepto.min.js"></script>
+    <script src="./example.js"></script>
+		
+	<script src="src/zepto.js"></script>	
+	<script src="js/profile.js"></script>
+		
+    <script src="http://cdnjs.gtimg.com/cdnjs/libs/zepto/1.0/zepto.js"></script>
+		-->
+	<script src="src/zepto.js"></script>
+	<!-- js-sdk weixin 签名 -->
+	<script type="text/javascript" src = "http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	
+	<script>
+		//wxSig()
+		// js-sdk签名
+		wxSig = function(){
+			$.ajax({
+	            url: 'script/weixinJS/wx_sig.php?url=' + location.href.split('#')[0] ,
+				dataType: "json",
+				success: function(result){
+					var signPackage = result
+					wx.config({
+						debug: false,
+	                    appId: signPackage.appId,
+	                    timestamp: signPackage.timestamp,
+	                    nonceStr: signPackage.nonceStr,
+	                    signature: signPackage.signature,
+						jsApiList: [
+						  'getLocation','openLocation',
+	                      'chooseImage','previewImage','uploadImage','downloadImage',
+						  'hideOptionMenu'
+						]
+					});
+			
+				    wx.ready(function () {
+						// 在这里调用 API，默认的
+						//wx.hideOptionMenu()
+				    });
+				}
+			});
+		}
+	</script>
+</body>
+</html>
